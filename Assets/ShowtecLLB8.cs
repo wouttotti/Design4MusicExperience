@@ -50,62 +50,83 @@ namespace Showtec
         #region Utility
         public static void Init()
         {
+
             OpenDMX.start();
             SetAllOff(true);
         }
 
+        /// <summary>
+        /// Writes the current DMX data to the usb-dmx device.
+        /// </summary>
         public static void SendData()
         {
             OpenDMX.writeData();
         }
 
+        /// <summary>
+        /// Returns the amount of DMX channels in a Showtec LED Bar 8 in P-4 mode.
+        /// </summary>
+        /// <returns></returns>
         public static int ChannelCount()
         {
             return 26;
         }
 
-        public static int GetChannel(SECTIONS_P4 section)
+        /// <summary>
+        /// Returns the channel number associated with the given section on the indexed LED bar.
+        /// Indexes start at 0 (e.g. the 3d LED bar will have index 2)
+        /// </summary>
+        /// <param name="section"></param>
+        /// <param name="ledbarIndex"></param>
+        /// <returns></returns>
+        public static int GetChannel(SECTIONS_P4 section, int ledbarIndex = 0)
         {
-            int channel = (int)section + 1;
-
+            int channel = (int)section + 1 + (ledbarIndex * ChannelCount());
             return channel;
         }
 
-        public static List<int> GetAllColorChannels(RGB rgb)
+        /// <summary>
+        /// Returns all channels assiciated with the given color on the given LED bar.
+        /// Indexes start at 0.
+        /// </summary>
+        /// <param name="rgb"></param>
+        /// <param name="ledbarIndex"></param>
+        /// <returns></returns>
+        public static List<int> GetAllColorChannels(RGB rgb, int ledbarIndex = 0)
         {
             List<int> channels = new List<int>();
 
             switch (rgb)
             {
                 case RGB.RED:
-                    channels.Add(GetChannel(SECTIONS_P4.RED1));
-                    channels.Add(GetChannel(SECTIONS_P4.RED2));
-                    channels.Add(GetChannel(SECTIONS_P4.RED3));
-                    channels.Add(GetChannel(SECTIONS_P4.RED4));
-                    channels.Add(GetChannel(SECTIONS_P4.RED5));
-                    channels.Add(GetChannel(SECTIONS_P4.RED6));
-                    channels.Add(GetChannel(SECTIONS_P4.RED7));
-                    channels.Add(GetChannel(SECTIONS_P4.RED8));
+                    channels.Add(GetChannel(SECTIONS_P4.RED1, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.RED2, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.RED3, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.RED4, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.RED5, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.RED6, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.RED7, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.RED8, ledbarIndex));
                     break;
                 case RGB.GREEN:
-                    channels.Add(GetChannel(SECTIONS_P4.GREEN1));
-                    channels.Add(GetChannel(SECTIONS_P4.GREEN2));
-                    channels.Add(GetChannel(SECTIONS_P4.GREEN3));
-                    channels.Add(GetChannel(SECTIONS_P4.GREEN4));
-                    channels.Add(GetChannel(SECTIONS_P4.GREEN5));
-                    channels.Add(GetChannel(SECTIONS_P4.GREEN6));
-                    channels.Add(GetChannel(SECTIONS_P4.GREEN7));
-                    channels.Add(GetChannel(SECTIONS_P4.GREEN8));
+                    channels.Add(GetChannel(SECTIONS_P4.GREEN1, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.GREEN2, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.GREEN3, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.GREEN4, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.GREEN5, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.GREEN6, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.GREEN7, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.GREEN8, ledbarIndex));
                     break;
                 case RGB.BLUE:
-                    channels.Add(GetChannel(SECTIONS_P4.BLUE1));
-                    channels.Add(GetChannel(SECTIONS_P4.BLUE2));
-                    channels.Add(GetChannel(SECTIONS_P4.BLUE3));
-                    channels.Add(GetChannel(SECTIONS_P4.BLUE4));
-                    channels.Add(GetChannel(SECTIONS_P4.BLUE5));
-                    channels.Add(GetChannel(SECTIONS_P4.BLUE6));
-                    channels.Add(GetChannel(SECTIONS_P4.BLUE7));
-                    channels.Add(GetChannel(SECTIONS_P4.BLUE8));
+                    channels.Add(GetChannel(SECTIONS_P4.BLUE1, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.BLUE2, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.BLUE3, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.BLUE4, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.BLUE5, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.BLUE6, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.BLUE7, ledbarIndex));
+                    channels.Add(GetChannel(SECTIONS_P4.BLUE8, ledbarIndex));
                     break;
             }
 
@@ -114,29 +135,49 @@ namespace Showtec
         #endregion
 
         #region Functionality
-        public static void SetMasterFader(byte value, bool writeImmediately)
+        /// <summary>
+        /// Set the value for the master fader. writeImmediately true -> signal is instantly sent to DMX device.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="writeImmediately"></param>
+        public static void SetMasterFader(byte value, bool writeImmediately, int ledbarIndex = 0)
         {
-            OpenDMX.setDmxValue(GetChannel(SECTIONS_P4.MASTER), value);
+            OpenDMX.setDmxValue(GetChannel(SECTIONS_P4.MASTER, ledbarIndex), value);
             if (writeImmediately)
                 OpenDMX.writeData();
         }
 
-        public static void SetStroboscope(byte value, bool writeImmediately)
+
+        /// <summary>
+        /// Set the value for the stroboscope. writeImmediately true -> signal is instantly sent to DMX device.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="writeImmediately"></param>
+        public static void SetStroboscope(byte value, bool writeImmediately, int ledbarIndex = 0)
         {
-            OpenDMX.setDmxValue(GetChannel(SECTIONS_P4.STROBE), value);
+            OpenDMX.setDmxValue(GetChannel(SECTIONS_P4.STROBE, ledbarIndex), value);
             if (writeImmediately)
                 OpenDMX.writeData();
         }
 
-        public static void SetAllSingleColor(RGB color, byte value, bool writeImmediately)
-        {
-            List<int> channels = GetAllColorChannels(color);
 
-            for (int i = 1; i < ChannelCount() + 1; i++)
+        /// <summary>
+        /// Sets all sections on the LED bar to a single color. Does not activate master fader.
+        /// writeImmediately -> Sends the dignal instantly to the DMX device.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="value"></param>
+        /// <param name="writeImmediately"></param>
+        public static void SetAllSingleColor(RGB color, byte value, bool writeImmediately, int ledbarIndex = 0)
+        {
+            List<int> channels = GetAllColorChannels(color, ledbarIndex);
+
+            // Channels start at 1.
+            for (int i = 1 + (ChannelCount() * ledbarIndex); i < 1 + ChannelCount() + (ledbarIndex * ChannelCount()); i++)
             {
                 if (channels.Contains(i))
                     OpenDMX.setDmxValue(i, value);
-                else if (i == GetChannel(SECTIONS_P4.STROBE) || i == GetChannel(SECTIONS_P4.MASTER))
+                else if (i == GetChannel(SECTIONS_P4.STROBE, ledbarIndex) || i == GetChannel(SECTIONS_P4.MASTER, ledbarIndex))
                     continue;
                 else
                     OpenDMX.setDmxValue(i, 0);
@@ -145,9 +186,14 @@ namespace Showtec
                 OpenDMX.writeData();
         }
 
-        public static void SetAllOff(bool writeImmediately)
+        /// <summary>
+        /// Turns all sections of the LED bar off, including strobe and master fader.
+        /// writeImmediately -> sends signal instantly to DMX device.
+        /// </summary>
+        /// <param name="writeImmediately"></param>
+        public static void SetAllOff(bool writeImmediately, int ledbarIndex = 0)
         {
-            for (int i = 0; i < 26; i++)
+            for (int i = 1 + (ChannelCount() * ledbarIndex); i < 1+ ChannelCount() + (ledbarIndex * ChannelCount()); i++)
             {
                 OpenDMX.setDmxValue(i, 0);
             }
