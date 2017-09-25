@@ -20,15 +20,15 @@ public class JointOrientation : MonoBehaviour
 
     public Vector2 StartPosition;
 
-    public bool DoOnce = false;
+    public bool Calibrated = false;
 
-    public bool CheckFistBool = false;
-    public bool Wait = false;
+    public bool ChangeLightIntensity = false;
 
     public DmxController DmxController;
     public int MasterFader;
 
-    public int ArmAngle;
+    public int ArmVertical;
+    public int ArmHorizontal;
 
     // A rotation that compensates for the Myo armband's orientation parallel to the ground, i.e. yaw.
     // Once set, the direction the Myo armband is facing becomes "forward" within the program.
@@ -47,28 +47,20 @@ public class JointOrientation : MonoBehaviour
     // Update is called once per frame.
     void Update ()
     {
-        if (_lastPose == Pose.Fist)
-        {
-            if (!Wait)
-            {
-                StartCoroutine(Checkfist());
-            }
-        }
         // Access the ThalmicMyo component attached to the Myo object.
         ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
 
-        Vector2 EndVector = new Vector2(Pointer.transform.position.x, Pointer.transform.position.y);
-        Vector2 diference = EndVector - StartPosition;
-        float sign = (EndVector.y < StartPosition.y) ? -1.0f : 1.0F;
-        if (CheckFistBool)
-        {
-            ArmAngle = (int)(Vector2.Angle(Vector2.right, diference) * sign);
-            ArmAngle += 90;
-            if(ArmAngle < 1)
-            {
-                ArmAngle = 1;
-            }
-            MasterFader = (255/180) * ArmAngle;
+        GetArmVertical();
+        GetArmHorizontal();
+
+        float anglepercentage = ((float)ArmVertical / 180f);
+
+        if (ChangeLightIntensity)
+        { 
+            float fadervalue = Mathf.Pow(255f, anglepercentage);
+
+            MasterFader = Mathf.Clamp((int)fadervalue, 0, 255);
+
             if (DmxController)
             {
                 DmxController.masterFaderControlActive = true;
@@ -79,24 +71,7 @@ public class JointOrientation : MonoBehaviour
         {
             DmxController.masterFaderControlActive = false;
         }
-
-        if(_lastPose == Pose.WaveOut)
-        {
-            if(DmxController)
-            {
-                DmxController.masterFaderVal = MasterFader;
-                DmxController.AllRed();
-            }
-        }
-        if(_lastPose == Pose.WaveIn)
-        {
-            if(DmxController)
-            {
-
-                DmxController.masterFaderVal = MasterFader;
-                DmxController.AllBlue();
-            }
-        }
+        
 
         // Update references when the pose becomes fingers spread or the q key is pressed.
         bool updateReference = false;
@@ -115,7 +90,7 @@ public class JointOrientation : MonoBehaviour
 
         // Update references. This anchors the joint on-screen such that it faces forward away
         // from the viewer when the Myo armband is oriented the way it is when these references are taken.
-        if (updateReference && !DoOnce) {
+        if (updateReference && !Calibrated) {
             // _antiYaw represents a rotation of the Myo armband about the Y axis (up) which aligns the forward
             // vector of the rotation with Z = 1 when the wearer's arm is pointing in the reference direction.
             _antiYaw = Quaternion.FromToRotation (
@@ -131,7 +106,7 @@ public class JointOrientation : MonoBehaviour
             // the roll value matches the reference.
             Vector3 referenceZeroRoll = computeZeroRollVector (myo.transform.forward);
             _referenceRoll = rollFromZero (referenceZeroRoll, myo.transform.forward, myo.transform.up);
-            DoOnce = true;
+            Calibrated = true;
         }
 
         // Current zero roll vector and roll value.
@@ -227,21 +202,33 @@ public class JointOrientation : MonoBehaviour
         myo.NotifyUserAction ();
     }
 
-    IEnumerator Checkfist()
+    int GetArmVertical()
     {
+        Vector2 EndVector = new Vector2(Pointer.transform.position.x, Pointer.transform.position.y);
+        Vector2 diference = EndVector - StartPosition;
         
-        Wait = true;
-        if (!CheckFistBool)
+        float sign = (EndVector.y < StartPosition.y) ? -1.0f : 1.0F;
+
+        ArmVertical = (int)(Vector2.Angle(Vector2.right, diference) * sign);
+        ArmVertical += 90;
+        if (ArmVertical < 1)
         {
-            CheckFistBool = true;
+            ArmVertical = 1;
         }
-        else
-        {
-            CheckFistBool = false;
-        }
-        yield return new WaitForSeconds(2);
-        StopAllCoroutines();
-        Wait = false;
+
+        return ArmVertical;
+       
     }
+
+    int GetArmHorizontal()
+    {
+        var horizontalRelation = new Vector3(Pointer.transform.position.x, Pointer.transform.position.y, Pointer.transform.position.z);
+        var relativePos = horizontalRelation - myo.transform.position;
+        var rotation = Quaternion.LookRotation(relativePos);
+        print(rotation);
+        return 0;
+    }
+ 
+
 
 }
