@@ -10,21 +10,33 @@ using VibrationType = Thalmic.Myo.VibrationType;
 public class MyoDataCreator : MonoBehaviour {
 
     public GameObject myo = null;
-
-    public GameObject Orientation = null;
-    public JointOrientation OrientationScript = null;
-
-    public GameObject DmxController = null;
     
+    public JointOrientation OrientationScript = null;
+    
+    public DmxController DmxControllerScript = null;
+
+    public bool Knightrider = false;
 
 
 	// Use this for initialization
 	void Start () {
-        OrientationScript = (JointOrientation)Orientation.GetComponent("JointOrientation");
 	}
 	
 	// Update is called once per frame
 	void Update () {
         print(OrientationScript.ArmHorizontal);
+
+        if(Knightrider)
+        {
+            StartKnightRider((OrientationScript.ArmHorizontal/100f),Knightrider);
+
+        }
+
 	}
+
+    void StartKnightRider(float percentage, bool status)
+    {
+        DmxControllerScript.knightRiderActive = status;
+        DmxControllerScript.knightRiderPercentage = percentage;
+    }
 }
