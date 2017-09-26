@@ -51,7 +51,7 @@ public class JointOrientation : MonoBehaviour
         ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
 
         GetArmVertical();
-        GetArmHorizontal();
+        ArmHorizontal = GetArmHorizontal();
 
         float anglepercentage = ((float)ArmVertical / 180f);
 
@@ -225,14 +225,14 @@ public class JointOrientation : MonoBehaviour
         Vector2 EndVector = new Vector2(Pointer.transform.position.x, Pointer.transform.position.y);
         Vector3 difference = EndVector - StartPosition;
 
-        difference.x += 2.5f;
+        difference.x += 3.5f;
         difference.x = Mathf.Clamp(difference.x, 0, 7);
-        float range = 7f / 10f;
+        float percentage = (difference.x / 5) * 100;
+        int ipercentage = (int)percentage;
+        ipercentage = Mathf.Clamp(ipercentage, 0, 100);
+        
 
-
-        print(range);
-
-        return ArmHorizontal;
+        return ipercentage;
     }
  
 
