@@ -15,22 +15,30 @@ public class DmxController : MonoBehaviour
         PURPLE
     }
 
+    public int ledbarCount = 2;
     public bool active = false;
     [Range(0, 255)]
     public int strobeVal = 220;
+
     public bool masterFaderControlActive = false;
     [Range(0, 255)]
     public int masterFaderVal = 255;
+
+    public bool knightRiderActive = false;
+    [Range(0f, 1f)]
+    public float knightRiderPercentage = 0.5f;
+    public LedColors knightRiderColor = LedColors.PURPLE;
 
     private float dmxSignalIntervalSeconds = 0;
     private float count;
     private float regularIntervalSeconds = 0.05f;
     private bool strobeActive = false;
     private float strobeIntervalSeconds = 0.05f;
+    private float maxLedbarIndex = 0;
 
     private void Awake()
     {
-
+        maxLedbarIndex = ledbarCount - 1;
         ShowtecLLB8.Init();
         dmxSignalIntervalSeconds = regularIntervalSeconds;
         SetAllSingleColor(LedColors.RED, false, 0);
@@ -49,7 +57,12 @@ public class DmxController : MonoBehaviour
             if (masterFaderControlActive)
                 SetMasterFader((byte)masterFaderVal);
             else
+            {
+                if (knightRiderActive)
+                    SetKnightRider(knightRiderPercentage);
+
                 ShowtecLLB8.SendData();
+            }
         }
     }
 
@@ -67,9 +80,15 @@ public class DmxController : MonoBehaviour
     }
 
     #region LedBar functions
-    public void AllOff()
+    /// <summary>
+    /// Shuts off all led bars
+    /// </summary>
+    public void SetAllOff()
     {
-        ShowtecLLB8.SetAllOff(true);
+        for (int i = 0; i < ledbarCount; i++)
+        {
+            ShowtecLLB8.SetAllOff(false, i);
+        }
         ResetCounter();
     }
 
@@ -79,30 +98,15 @@ public class DmxController : MonoBehaviour
         ShowtecLLB8.SetMasterFader(value, true, ledbarIndex);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="value"></param>
-    public void SetKnightRiderEffect(byte value)
+    public void SetKnightRider(float percentage)
     {
-        AllOff();
-        int amountLedBars = 10;
-        byte maxValue = 255;
-        int channels = 25;
-        int correction = 1;
-        int stroboChannel = 24;
-        int masterChannel = 25;
-        int activeLedBar = ((value / maxValue) * 100) / amountLedBars;
-        int startingChannel = ((activeLedBar * channels) + correction);
-        int endChannel = ((activeLedBar * channels) + correction + channels);
-        for (int i = startingChannel; i <= endChannel; i++)
-        {
-            if (i == stroboChannel || i == masterChannel)
-                continue;
-            else
-                SetAllSingleColor(LedColors.BLUE, true, i);
-        }
-        
+        SetAllOff();
+
+        int activeBar = Mathf.RoundToInt(percentage * (float)maxLedbarIndex);
+        Debug.Log(activeBar);
+        SetAllSingleColor(knightRiderColor, false, activeBar);
+        SetMasterFader(255, activeBar);
+
     }
 
     public void SetStroboscope(bool active, int ledbarIndex = 0)
@@ -143,40 +147,34 @@ public class DmxController : MonoBehaviour
     private void SetAllBlue(bool writeImmediately, int ledbarIndex = 0)
     {
         ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.BLUE, 255, false, ledbarIndex);
-        ResetCounter();
     }
 
     private void SetAllRed(bool writeImmediately, int ledbarIndex = 0)
     {
         ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.RED, 255, false, ledbarIndex);
-        ResetCounter();
     }
 
     private void SetAllGreen(bool writeImmediately, int ledbarIndex = 0)
     {
         ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.GREEN, 255, false, ledbarIndex);
-        ResetCounter();
     }
 
     private void SetAllPurple(bool writeImmediately, int ledbarIndex = 0)
     {
         ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.RED, 255, false, ledbarIndex, false);
         ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.BLUE, 255, false, ledbarIndex, false);
-        ResetCounter();
     }
 
     private void SetAllYellow(bool writeImmediately, int ledbarIndex = 0)
     {
         ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.RED, 255, false, ledbarIndex, false);
         ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.GREEN, 255, false, ledbarIndex, false);
-        ResetCounter();
     }
 
     private void SetAllCyan(bool writeImmediately, int ledbarIndex = 0)
     {
         ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.GREEN, 255, false, ledbarIndex, false);
         ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.BLUE, 255, false, ledbarIndex, false);
-        ResetCounter();
     }
     #endregion
     #endregion
