@@ -63,13 +63,13 @@ public class JointOrientation : MonoBehaviour
 
             if (DmxController)
             {
-                DmxController.masterFaderControlActive = true;
+                //DmxController.masterFaderControlActive = true;
                 DmxController.masterFaderVal = MasterFader;
             }
         }
         else
         {
-            DmxController.masterFaderControlActive = false;
+            //DmxController.masterFaderControlActive = false;
         }
         
 
