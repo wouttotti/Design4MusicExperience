@@ -39,4 +39,26 @@ public class MyoDataCreator : MonoBehaviour {
         DmxControllerScript.knightRiderActive = status;
         DmxControllerScript.knightRiderPercentage = percentage;
     }
+
+    public void activateIntensity()
+    {
+       
+    }
+    public void activateStroboscope()
+    {
+
+    }
+    public void activateColorPalette()
+    {
+
+    }
+    public void activateFlash()
+    {
+
+    }
+    public void activateKnightrider()
+    {
+        Knightrider = true;
+    }
+
 }
