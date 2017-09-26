@@ -79,6 +79,32 @@ public class DmxController : MonoBehaviour
         ShowtecLLB8.SetMasterFader(value, true, ledbarIndex);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetKnightRiderEffect(byte value)
+    {
+        AllOff();
+        int amountLedBars = 10;
+        byte maxValue = 255;
+        int channels = 25;
+        int correction = 1;
+        int stroboChannel = 24;
+        int masterChannel = 25;
+        int activeLedBar = ((value / maxValue) * 100) / amountLedBars;
+        int startingChannel = ((activeLedBar * channels) + correction);
+        int endChannel = ((activeLedBar * channels) + correction + channels);
+        for (int i = startingChannel; i <= endChannel; i++)
+        {
+            if (i == stroboChannel || i == masterChannel)
+                continue;
+            else
+                SetAllSingleColor(LedColors.BLUE, true, i);
+        }
+        
+    }
+
     public void SetStroboscope(bool active, int ledbarIndex = 0)
     {
         dmxSignalIntervalSeconds = active ? strobeIntervalSeconds : regularIntervalSeconds;
