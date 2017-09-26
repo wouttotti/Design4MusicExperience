@@ -14,7 +14,8 @@ public class MyoDataCreator : MonoBehaviour {
     public GameObject Orientation = null;
     public JointOrientation OrientationScript = null;
 
-    public int ArmVertical;
+    public GameObject DmxController = null;
+    
 
 
 	// Use this for initialization
@@ -24,5 +25,6 @@ public class MyoDataCreator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        print(OrientationScript.ArmHorizontal);
 	}
 }
