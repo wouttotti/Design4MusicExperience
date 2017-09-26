@@ -39,7 +39,7 @@ public class MyoDataCreator : MonoBehaviour
         }
         else if (Intensity)
         {
-            StartIntensity();
+            StartIntensity((byte)(OrientationScript.ArmVertical), Intensity);
         }
         else if (Stroboscope)
         {
@@ -56,9 +56,46 @@ public class MyoDataCreator : MonoBehaviour
 
     }
 
-    private void StartIntensity()
+    private void ResetValues()
     {
-        DmxControllerScript.light
+        Knightrider = false;
+        Intensity = false;
+        Stroboscope = false;
+        ColorPalette = false;
+        Flash = false;
+        if (DmxControllerScript.knightRiderActive)
+        {
+            DmxControllerScript.knightRiderActive = false;
+        }
+        if (DmxControllerScript.masterFaderControlActive)
+        {
+            DmxControllerScript.masterFaderControlActive = false;
+        }
+        if (DmxControllerScript.strobeActive)
+        {
+            DmxControllerScript.strobeActive = false;
+        }
+    }
+
+    private void StartFlash()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void StartColorPalette()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void StartStroboscope()
+    {
+        DmxControllerScript.ToggleStrobe();
+    }
+
+    private void StartIntensity(byte value, bool status)
+    {
+        DmxControllerScript.masterFaderControlActive = status;
+        DmxControllerScript.masterFaderVal = value;
     }
 
     void StartKnightRider(float percentage, bool status)
@@ -69,22 +106,31 @@ public class MyoDataCreator : MonoBehaviour
 
     public void activateIntensity()
     {
+        ResetValues();
+        Intensity = true;
 
     }
     public void activateStroboscope()
     {
+        ResetValues();
+        Stroboscope = true;
 
     }
     public void activateColorPalette()
     {
+        ResetValues();
+        ColorPalette = true;
 
     }
     public void activateFlash()
     {
+        ResetValues();
+        Flash = true;
 
     }
     public void activateKnightrider()
     {
+        ResetValues();
         Knightrider = true;
     }
 
