@@ -49,6 +49,12 @@ public class DmxController : MonoBehaviour
 
     private float dmxSignalIntervalSeconds = 0.025f;
     private float count;
+<<<<<<< HEAD
+=======
+    private float regularIntervalSeconds = 0.05f;
+    public bool strobeActive = false;
+    private float strobeIntervalSeconds = 0.05f;
+>>>>>>> 7e750fbbc7d35feb9bd0fa0d6983ef1a13566abf
     private float maxLedbarIndex = 0;
 
 
