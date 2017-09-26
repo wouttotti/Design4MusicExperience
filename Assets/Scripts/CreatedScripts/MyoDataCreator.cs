@@ -16,7 +16,9 @@ public class MyoDataCreator : MonoBehaviour {
     public DmxController DmxControllerScript = null;
 
     public bool Knightrider = false;
-
+    public bool Intensity = false;
+    public bool Stroboscope = false;
+    public 
 
 	// Use this for initialization
 	void Start () {
