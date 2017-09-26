@@ -36,7 +36,7 @@ public class MyoDataCreator : MonoBehaviour {
 
     void StartKnightRider(float percentage, bool status)
     {
-        DmxControllerScript.knightRiderActive = status;
+        //DmxControllerScript.knightRiderActive = status;
         DmxControllerScript.knightRiderPercentage = percentage;
     }
 }
