@@ -222,11 +222,17 @@ public class JointOrientation : MonoBehaviour
 
     int GetArmHorizontal()
     {
-        var horizontalRelation = new Vector3(Pointer.transform.position.x, Pointer.transform.position.y, Pointer.transform.position.z);
-        var relativePos = horizontalRelation - myo.transform.position;
-        var rotation = Quaternion.LookRotation(relativePos);
-        print(rotation);
-        return 0;
+        Vector2 EndVector = new Vector2(Pointer.transform.position.x, Pointer.transform.position.y);
+        Vector3 difference = EndVector - StartPosition;
+
+        difference.x += 2.5f;
+        difference.x = Mathf.Clamp(difference.x, 0, 7);
+        float range = 7f / 10f;
+
+
+        print(range);
+
+        return ArmHorizontal;
     }
  
 
