@@ -73,6 +73,9 @@ public class DmxController : MonoBehaviour
             count = 0;
     }
 
+    /// <summary>
+    /// Toggles the stroboscope
+    /// </summary>
     public void ToggleStrobe()
     {
         strobeActive = !strobeActive;
@@ -92,23 +95,36 @@ public class DmxController : MonoBehaviour
         ResetCounter();
     }
 
+    /// <summary>
+    /// Set the master fader value for a given led bar
+    /// </summary>
+    /// <param name="value">0 - 255</param>
+    /// <param name="ledbarIndex">The index of the led bar (starting at 0)</param>
     public void SetMasterFader(byte value, int ledbarIndex = 0)
     {
         ResetCounter();
         ShowtecLLB8.SetMasterFader(value, true, ledbarIndex);
     }
 
+    /// <summary>
+    /// Sets one of the led bars active with the knightRiderColor, while turning all others off. 
+    /// </summary>
+    /// <param name="percentage">Determines which of the led bars gets activated</param>
     public void SetKnightRider(float percentage)
     {
         SetAllOff();
 
         int activeBar = Mathf.RoundToInt(percentage * (float)maxLedbarIndex);
-        Debug.Log(activeBar);
         SetAllSingleColor(knightRiderColor, false, activeBar);
         SetMasterFader(255, activeBar);
-
     }
 
+    /// <summary>
+    /// Enables the stroboscope for a given led bar.
+    /// Strobe intensity is determined by strobeVal.
+    /// </summary>
+    /// <param name="active"></param>
+    /// <param name="ledbarIndex"></param>
     public void SetStroboscope(bool active, int ledbarIndex = 0)
     {
         dmxSignalIntervalSeconds = active ? strobeIntervalSeconds : regularIntervalSeconds;
@@ -118,6 +134,13 @@ public class DmxController : MonoBehaviour
         ShowtecLLB8.SetStroboscope(value, true, ledbarIndex);
     }
 
+    /// <summary>
+    /// Sets an entire led bar to a single color.
+    /// Does NOT activate the master fader.
+    /// </summary>
+    /// <param name="color"></param>
+    /// <param name="writeImmediately">Send DMX data to device</param>
+    /// <param name="ledbarIndex"></param>
     public void SetAllSingleColor(LedColors color, bool writeImmediately, int ledbarIndex = 0)
     {
         switch (color)
