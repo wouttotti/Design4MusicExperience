@@ -168,7 +168,7 @@ namespace Showtec
         /// <param name="color"></param>
         /// <param name="value"></param>
         /// <param name="writeImmediately"></param>
-        public static void SetAllSingleColor(RGB color, byte value, bool writeImmediately, int ledbarIndex = 0)
+        public static void SetAllSingleColor(RGB color, byte value, bool writeImmediately, int ledbarIndex = 0, bool pure = true)
         {
             List<int> channels = GetAllColorChannels(color, ledbarIndex);
 
@@ -180,7 +180,10 @@ namespace Showtec
                 else if (i == GetChannel(SECTIONS_P4.STROBE, ledbarIndex) || i == GetChannel(SECTIONS_P4.MASTER, ledbarIndex))
                     continue;
                 else
-                    OpenDMX.setDmxValue(i, 0);
+                {
+                    if (pure)
+                        OpenDMX.setDmxValue(i, 0);
+                }
             }
             if (writeImmediately)
                 OpenDMX.writeData();
@@ -193,7 +196,7 @@ namespace Showtec
         /// <param name="writeImmediately"></param>
         public static void SetAllOff(bool writeImmediately, int ledbarIndex = 0)
         {
-            for (int i = 1 + (ChannelCount() * ledbarIndex); i < 1+ ChannelCount() + (ledbarIndex * ChannelCount()); i++)
+            for (int i = 1 + (ChannelCount() * ledbarIndex); i < 1 + ChannelCount() + (ledbarIndex * ChannelCount()); i++)
             {
                 OpenDMX.setDmxValue(i, 0);
             }

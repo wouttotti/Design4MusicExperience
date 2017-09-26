@@ -23,12 +23,9 @@ public class DmxController : MonoBehaviour
 
         ShowtecLLB8.Init();
         dmxSignalIntervalSeconds = regularIntervalSeconds;
-        AllBlue(false, 0);
-        AllBlue(true, 1);
+        SetAllBlue(false, 0);
+        SetAllBlue(true, 1);
         SetMasterFader(255);
-
-
-
     }
 
     private void Update()
@@ -80,24 +77,42 @@ public class DmxController : MonoBehaviour
         ShowtecLLB8.SetStroboscope(value, true, ledbarIndex);
     }
 
-    public void AllBlue(bool writeImmediately, int ledbarIndex = 0)
+    public void SetAllBlue(bool writeImmediately, int ledbarIndex = 0)
     {
         ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.BLUE, 255, false, ledbarIndex);
-        //ShowtecLLB8.SetMasterFader(255, writeImmediately, ledbarIndex);
         ResetCounter();
     }
 
-    public void AllRed(bool writeImmediately, int ledbarIndex = 0)
+    public void SetAllRed(bool writeImmediately, int ledbarIndex = 0)
     {
         ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.RED, 255, false, ledbarIndex);
-       // ShowtecLLB8.SetMasterFader(255, writeImmediately, ledbarIndex);
         ResetCounter();
     }
 
-    public void AllGreen(bool writeImmediately, int ledbarIndex = 0)
+    public void SetAllGreen(bool writeImmediately, int ledbarIndex = 0)
     {
         ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.GREEN, 255, false, ledbarIndex);
-        //ShowtecLLB8.SetMasterFader(255, writeImmediately, ledbarIndex);
+        ResetCounter();
+    }
+
+    public void SetAllPurple(bool writeImmediately, int ledbarIndex = 0)
+    {
+        ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.RED, 255, false, ledbarIndex, false);
+        ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.BLUE, 255, false, ledbarIndex, false);
+        ResetCounter();
+    }
+
+    public void SetAllYellow(bool writeImmediately, int ledbarIndex = 0)
+    {
+        ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.RED, 255, false, ledbarIndex, false);
+        ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.GREEN, 255, false, ledbarIndex, false);
+        ResetCounter();
+    }
+
+    public void SetAllCyan(bool writeImmediately, int ledbarIndex = 0)
+    {
+        ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.GREEN, 255, false, ledbarIndex, false);
+        ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.BLUE, 255, false, ledbarIndex, false);
         ResetCounter();
     }
 
