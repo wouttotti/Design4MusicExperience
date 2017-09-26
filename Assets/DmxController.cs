@@ -16,6 +16,7 @@ public class DmxController : MonoBehaviour
     private float count;
     private float regularIntervalSeconds = 0.05f;
     private bool strobeActive = false;
+    private bool knightRiderEffectActive = false;
     private float strobeIntervalSeconds = 0.05f;
 
     private void Awake()
@@ -71,6 +72,16 @@ public class DmxController : MonoBehaviour
 
         byte value = active ? (byte)strobeVal : (byte)0;
         ShowtecLLB8.SetStroboscope(value, true);
+    }
+
+    /// <summary>
+    /// Receives value between 0-255
+    /// Turn on section depending on the value
+    /// </summary>
+    /// <param name="active"></param>
+    public void SetKnightRiderEffect(byte value)
+    {
+        ShowtecLLB8.SetKnightRiderEffect(value);
     }
 
     public void AllBlue()

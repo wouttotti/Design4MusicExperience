@@ -111,6 +111,8 @@ namespace Showtec
 
             return channels;
         }
+
+       
         #endregion
 
         #region Functionality
@@ -126,6 +128,26 @@ namespace Showtec
             OpenDMX.setDmxValue(GetChannel(SECTIONS_P4.STROBE), value);
             if (writeImmediately)
                 OpenDMX.writeData();
+        }
+
+        /// <summary>
+        ///  Calculates which ledbar has to be active
+        ///  Sets the channels of this bar on to maxValue
+        /// </summary>
+        /// <param name="v"></param>
+        public static void SetKnightRiderEffect(byte value)
+        {
+            int amountLedBars = 10;
+            byte maxValue = 255;
+            int channels = 25;
+            int correction = 1; 
+            int activeLedBar = ((value / maxValue) * 100) / amountLedBars;
+            int startingChannel = ((activeLedBar * channels) + correction);
+            int endChannel = ((activeLedBar * channels) + correction + channels);
+            for (int i = startingChannel; i < endChannel; i++)
+            {
+                OpenDMX.setDmxValue(i, maxValue);
+            }
         }
 
         public static void SetAllSingleColor(RGB color, byte value, bool writeImmediately)
