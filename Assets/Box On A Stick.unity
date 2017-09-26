@@ -240,12 +240,12 @@ MonoBehaviour:
   myo: {fileID: 1201201557}
   Pointer: {fileID: 1605681342}
   StartPosition: {x: 0, y: 0}
-  DoOnce: 0
-  CheckFistBool: 0
-  Wait: 0
+  Calibrated: 0
+  ChangeLightIntensity: 0
   DmxController: {fileID: 347355794}
   MasterFader: 0
-  ArmAngle: 0
+  ArmVertical: 0
+  ArmHorizontal: 0
 --- !u!1001 &347355792
 Prefab:
   m_ObjectHideFlags: 0
@@ -549,4 +549,48 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1962280611
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1962280613}
+  - component: {fileID: 1962280612}
+  m_Layer: 0
+  m_Name: MasterController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1962280612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1962280611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ff98ad6197f4140972b4dfe7e7442d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myo: {fileID: 1201201557}
+  OrientationScript: {fileID: 312746766}
+  DmxControllerScript: {fileID: 347355794}
+  Knightrider: 0
+--- !u!4 &1962280613
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1962280611}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.08103376, y: 1.1574087, z: 1.1166992}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
