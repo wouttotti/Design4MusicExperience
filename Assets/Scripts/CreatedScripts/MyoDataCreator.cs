@@ -39,26 +39,21 @@ public class MyoDataCreator : MonoBehaviour
         }
         else if (Intensity)
         {
-            StartIntensity();
         }
         else if (Stroboscope)
         {
-            StartStroboscope();
         }
         else if (ColorPalette)
         {
-            StartColorPalette();
         }
         else if (Flash)
         {
-            StartFlash();
         }
 
     }
 
     private void StartIntensity()
     {
-        DmxControllerScript.light
     }
 
     void StartKnightRider(float percentage, bool status)
