@@ -37,28 +37,28 @@ public class MyoDataCreator : MonoBehaviour
         {
             StartKnightRider((OrientationScript.ArmHorizontal / 100f), Knightrider);
         }
-        //else if (Intensity)
-        //{
-        //    StartIntensity();
-        //}
-        //else if (Stroboscope)
-        //{
-        //    StartStroboscope();
-        //}
-        //else if (ColorPalette)
-        //{
-        //    StartColorPalette();
-        //}
-        //else if (Flash)
-        //{
-        //    StartFlash();
-        //}
+        else if (Intensity)
+        {
+            StartIntensity();
+        }
+        else if (Stroboscope)
+        {
+            StartStroboscope();
+        }
+        else if (ColorPalette)
+        {
+            StartColorPalette();
+        }
+        else if (Flash)
+        {
+            StartFlash();
+        }
 
     }
 
     private void StartIntensity()
     {
-        throw new NotImplementedException();
+        DmxControllerScript.light
     }
 
     void StartKnightRider(float percentage, bool status)
