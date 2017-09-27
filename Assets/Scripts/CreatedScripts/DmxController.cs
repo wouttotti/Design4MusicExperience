@@ -146,12 +146,11 @@ public class DmxController : MonoBehaviour
                 ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.BLUE, blue, false, i, false);
                 ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.RED, red, false, i, false);
                 ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.GREEN, 0, false, i, false);
-
             }
         }
         else
         {
-            // This only happens when percantage == 1. Safety measure.
+            // This only happens when percentage == 1. Safety measure.
             for (int i = 0; i < ledbarCount; i++)
             {
                 ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.RED, 255, false, i, false);
