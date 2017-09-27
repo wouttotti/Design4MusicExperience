@@ -37,7 +37,7 @@ public class DmxController : MonoBehaviour
     private bool colorChangeActive = false;
     private bool flashActive = false;
 
-    private float flashDuration = .8f;
+    private float flashDuration = .4f;
     private float currentFlashPercentage = 0f;
 
     [Range(0, 255)]

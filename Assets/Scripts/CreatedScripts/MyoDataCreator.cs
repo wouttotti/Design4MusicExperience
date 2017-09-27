@@ -28,6 +28,8 @@ public class MyoDataCreator : MonoBehaviour
     public bool ColorPalette = false;
     public bool Flash = false;
 
+    private bool punch;
+
     // Use this for initialization
     void Start()
     {
@@ -36,6 +38,7 @@ public class MyoDataCreator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (Knightrider)
         {
             StartKnightRider((OrientationScript.ArmHorizontal / 100f), Knightrider);
@@ -51,6 +54,12 @@ public class MyoDataCreator : MonoBehaviour
         }
         else if (Flash)
         {
+            if (MyoScript.accelerometer.x > 1 && !punch)
+            {
+                StartCoroutine(PunchCooldown());
+                punch = true;
+                StartFlash();
+            }
         }
 
     }
@@ -61,8 +70,11 @@ public class MyoDataCreator : MonoBehaviour
 
     void StartKnightRider(float percentage, bool status)
     {
-        DmxControllerScript.SetActiveEffect(DmxController.LedEffects.KNIGHT_RIDER);
         DmxControllerScript.knightRiderPercentage = percentage;
+    }
+    void StartFlash()
+    {
+        DmxControllerScript.Flash();
     }
 
     public void activateIntensity()
@@ -79,11 +91,20 @@ public class MyoDataCreator : MonoBehaviour
     }
     public void activateFlash()
     {
-
+        DmxControllerScript.SetActiveEffect(DmxController.LedEffects.FLASH);
+        Flash = true;
     }
     public void activateKnightrider()
     {
+        DmxControllerScript.SetActiveEffect(DmxController.LedEffects.KNIGHT_RIDER);
         Knightrider = true;
+    }
+
+    IEnumerator PunchCooldown()
+    {
+        yield return new WaitForSeconds(0.4f);
+        punch = false;
+        StopCoroutine(PunchCooldown());
     }
 
 }
