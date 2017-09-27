@@ -39,26 +39,25 @@ public class MyoDataCreator : MonoBehaviour
     {
         if (Knightrider)
         {
-            StartKnightRider(OrientationScript.ArmHorizontal / 100f);
+            DmxControllerScript.knightRiderPercentage = ((float)OrientationScript.ArmHorizontal / 100f);
         }
         else if (Intensity)
         {
-
             float anglepercentage = ((float)OrientationScript.ArmVertical / 180f);
-            
             float fadervalue = Mathf.Pow(255f, anglepercentage);
-
             MasterFader = Mathf.Clamp((int)fadervalue, 0, 255);
-            
-            StartIntensity((byte)MasterFader);
+            DmxControllerScript.masterFaderVal = ((byte)MasterFader);
         }
         else if (Stroboscope)
         {
-            StartStroboscope();
+			float anglepercentage = ((float)OrientationScript.ArmVertical / 180f);
+			float fadervalue = Mathf.Pow(255f, anglepercentage);
+			MasterFader = Mathf.Clamp((int)fadervalue, 0, 255);
+			DmxControllerScript.masterFaderVal = ((byte)MasterFader);
         }
         else if (ColorPalette)
         {
-            StartColorPalette();
+            DmxControllerScript.colorchangePercentage = ((float)OrientationScript.ArmHorizontal / 100f);
         }
         else if (Flash)
         {
@@ -66,34 +65,15 @@ public class MyoDataCreator : MonoBehaviour
             {
                 StartCoroutine(PunchCooldown());
                 punch = true;
-                StartFlash();
+                DmxControllerScript.Flash();
             }
         }
-
     }
 
-    private void StartColorPalette()
-    {
-        throw new NotImplementedException();
-    }
+    /// <summary>
+    /// /////////////////////
+    /// </summary>
 
-    private void StartStroboscope()
-    {
-    }
-
-    private void StartIntensity(byte value)
-    {
-        DmxControllerScript.masterFaderVal = value;
-    }
-
-    void StartKnightRider(float percentage)
-    {
-        DmxControllerScript.knightRiderPercentage = percentage;
-    }
-    void StartFlash()
-    {
-        DmxControllerScript.Flash();
-    }
 
     public void activateIntensity()
     {
@@ -103,11 +83,13 @@ public class MyoDataCreator : MonoBehaviour
     }
     public void activateStroboscope()
     {
+        DmxControllerScript.SetActiveEffect(DmxController.LedEffects.STROBE_SPEED);
         Stroboscope = true;
 
     }
     public void activateColorPalette()
     {
+        DmxControllerScript.SetActiveEffect(DmxController.LedEffects.COLOR_CHANGE);
         ColorPalette = true;
 
     }
