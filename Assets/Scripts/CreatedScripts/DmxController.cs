@@ -8,10 +8,10 @@ public class DmxController : MonoBehaviour
     public enum LedColors
     {
         RED,
-        GREEN,
-        BLUE,
         YELLOW,
+        GREEN,
         CYAN,
+        BLUE,
         PURPLE,
         WHITE
     }
@@ -27,9 +27,6 @@ public class DmxController : MonoBehaviour
     }
 
     public int ledbarCount = 2;
-    public bool active = false;
-    [Range(0, 255)]
-    public byte strobeVal = 220;
 
     private bool masterFaderControlActive = false;
     private bool knightRiderActive = false;
@@ -37,8 +34,11 @@ public class DmxController : MonoBehaviour
     private bool colorChangeActive = false;
     private bool flashActive = false;
 
-    private float flashDuration = .8f;
+    public float flashDuration = .8f;
     private float currentFlashPercentage = 0f;
+
+    [Range(0, 255)]
+    public byte strobeVal = 220;
 
     [Range(0, 255)]
     public int masterFaderVal = 255;
@@ -49,35 +49,29 @@ public class DmxController : MonoBehaviour
 
     private float dmxSignalIntervalSeconds = 0.025f;
     private float count;
-    private float regularIntervalSeconds = 0.05f;
-    private float strobeIntervalSeconds = 0.05f;
     private float maxLedbarIndex = 0;
 
+    [Range(0f, 1f)]
+    public float colorchangePercentage = 0f;
+    private LedColors nextColorChangeColor;
+    private LedColors currentColorChangeColor;
 
     private void Awake()
     {
         maxLedbarIndex = ledbarCount - 1;
         ShowtecLLB8.Init();
-
-        /*
-        SetAllSingleColor(LedColors.RED, false, 0);
-        SetAllSingleColor(LedColors.PURPLE, false, 1);
-        SetMasterFader(255, 0);
-        SetMasterFader(255, 1);
-        */
-
     }
 
     private void Start()
     {
-        SetActiveEffect(LedEffects.FLASH);
-        Flash();
+        SetActiveEffect(LedEffects.COLOR_CHANGE);
+        SetMasterFaderAll(255);
     }
 
     private void Update()
     {
         count += Time.deltaTime;
-        if (count >= dmxSignalIntervalSeconds && active)
+        if (count >= dmxSignalIntervalSeconds)
         {
             ResetCounter();
 
@@ -87,10 +81,71 @@ public class DmxController : MonoBehaviour
                 SetKnightRider(knightRiderPercentage);
             else if (strobeActive)
                 SetStroboscopeAll(strobeVal);
-            else if (colorChangeActive) { }
+            else if (colorChangeActive)
+                SetColorChange(colorchangePercentage);
             else if (flashActive) { }
 
+            // Always send data every dmxSignalIntervalSeconds for maximum smoothness
             ShowtecLLB8.SendData();
+        }
+    }
+
+    private void SetColorChange(float percentage)
+    {
+        if (percentage < 0.33f)
+        {
+            Mathf.Clamp(percentage, 0f, 0.33f);
+
+            byte red = (byte)(255f * (1f - (percentage / 0.33f)));
+            byte green = (byte)(255f * ((percentage / 0.33f)));
+
+            for (int i = 0; i < ledbarCount; i++)
+            {
+                ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.RED, red, false, i, false);
+                ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.GREEN, green, false, i, false);
+                ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.BLUE, 0, false, i, false);
+            }
+        }
+        else if (percentage < 0.66f)
+        {
+            percentage -= 0.33f;
+            Mathf.Clamp(percentage, 0f, 0.33f);
+
+            byte green = (byte)(255f * (1f - (percentage / 0.33f)));
+            byte blue = (byte)(255f * ((percentage / 0.33f))); ;
+
+            for (int i = 0; i < ledbarCount; i++)
+            {
+                ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.GREEN, green, false, i, false);
+                ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.BLUE, blue, false, i, false);
+                ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.RED, 0, false, i, false);
+            }
+        }
+        else if (percentage < 0.99f)
+        {
+            percentage -= 0.66f;
+            Mathf.Clamp(percentage, 0f, 0.33f);
+
+            byte blue = (byte)(255f * (1f - (percentage / 0.33f)));
+            byte red = (byte)(255f * ((percentage / 0.33f)));
+
+            for (int i = 0; i < ledbarCount; i++)
+            {
+                ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.BLUE, blue, false, i, false);
+                ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.RED, red, false, i, false);
+                ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.GREEN, 0, false, i, false);
+
+            }
+        }
+        else
+        {
+            // This only happens when percantage == 1. Safety measure.
+            for (int i = 0; i < ledbarCount; i++)
+            {
+                ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.RED, 255, false, i, false);
+                ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.BLUE, 0, false, i, false);
+                ShowtecLLB8.SetAllSingleColor(ShowtecLLB8.RGB.GREEN, 0, false, i, false);
+            }
         }
     }
 
@@ -125,6 +180,9 @@ public class DmxController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Set all 'active' booleans to false
+    /// </summary>
     private void DisableAllEffects()
     {
         colorChangeActive = false;
@@ -134,6 +192,9 @@ public class DmxController : MonoBehaviour
         masterFaderControlActive = false;
     }
 
+    /// <summary>
+    /// Reduce count by dmxSignalIntervalSeconds. Clamp at 0.
+    /// </summary>
     private void ResetCounter()
     {
         count -= dmxSignalIntervalSeconds;
@@ -171,17 +232,24 @@ public class DmxController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Set all led bars to a single color and fade out over time.
+    /// </summary>
     public void Flash()
     {
         if (!flashActive)
             return;
         StopCoroutine("FlashFade");
         currentFlashPercentage = 1f;
-        SetSingleColorAll(LedColors.CYAN, false);
+        SetSingleColorAll(LedColors.WHITE, false);
         SetMasterFaderAll((byte)(currentFlashPercentage * 255));
         StartCoroutine("FlashFade");
     }
 
+    /// <summary>
+    /// Fade all led bars out over time
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator FlashFade()
     {
         while (currentFlashPercentage > 0f)
@@ -265,6 +333,9 @@ public class DmxController : MonoBehaviour
                 break;
             case LedColors.PURPLE:
                 SetPurple(writeImmediately, ledbarIndex);
+                break;
+            case LedColors.WHITE:
+                SetWhite(writeImmediately, ledbarIndex);
                 break;
         }
     }
