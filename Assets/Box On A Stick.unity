@@ -291,10 +291,10 @@ RectTransform:
   m_Father: {fileID: 1015851025}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 219.18, y: -117.290016}
-  m_SizeDelta: {x: 196.29, y: 95.89}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -225, y: 175}
+  m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &261044697
 MonoBehaviour:
@@ -469,6 +469,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 114166975189226396, guid: eea99e9344f06104d998d2968e1f4f30,
+        type: 2}
+      propertyPath: strobeLerpMultiplier
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: eea99e9344f06104d998d2968e1f4f30, type: 2}
   m_IsPrefabParent: 0
@@ -510,10 +515,10 @@ RectTransform:
   m_Father: {fileID: 1015851025}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 318.6, y: 82.8}
-  m_SizeDelta: {x: 202.97, y: 101.61}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -130, y: -125}
+  m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &531464821
 MonoBehaviour:
@@ -632,10 +637,10 @@ RectTransform:
   m_Father: {fileID: 1015851025}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 19.079994, y: 82.79999}
-  m_SizeDelta: {x: 203.92, y: 101.61}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -125}
+  m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &651909950
 MonoBehaviour:
@@ -754,10 +759,10 @@ RectTransform:
   m_Father: {fileID: 1015851025}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -181.98001, y: -118.200005}
-  m_SizeDelta: {x: 198.2, y: 108.3}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 225, y: 175}
+  m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &966630876
 MonoBehaviour:
@@ -990,9 +995,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Stroboscoop
-
-'
+  m_Text: Stroboscoop
 --- !u!222 &1005149232
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1085,7 +1088,7 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 2
   m_ReferenceResolution: {x: 800, y: 600}
@@ -1331,9 +1334,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Intensiteit
-
-'
+  m_Text: Intensiteit
 --- !u!222 &1435952618
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1495,9 +1496,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Kleurpalette
-
-'
+  m_Text: Kleurpalette
 --- !u!222 &1619565833
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1571,10 +1570,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Flits
-
-
-'
+  m_Text: Flits
 --- !u!222 &1771724569
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1613,10 +1609,10 @@ RectTransform:
   m_Father: {fileID: 1015851025}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -279.17, y: 82.79999}
-  m_SizeDelta: {x: 202.01, y: 101.61}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 130, y: -125}
+  m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1859089865
 MonoBehaviour:
@@ -1770,9 +1766,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Knightrider
-
-'
+  m_Text: Knightrider
 --- !u!222 &1929669248
 CanvasRenderer:
   m_ObjectHideFlags: 0
