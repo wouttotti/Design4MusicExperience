@@ -91,6 +91,11 @@ public class DmxController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the color of all led bars according to the input percentage.
+    /// Percentage is linked to color spectrum from red -> green -> blue
+    /// </summary>
+    /// <param name="percentage"></param>
     private void SetColorChange(float percentage)
     {
         if (percentage < 0.33f)
