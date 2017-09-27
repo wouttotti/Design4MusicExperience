@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using LockingPolicy = Thalmic.Myo.LockingPolicy;
+using XDirection = Thalmic.Myo.XDirection;
 using Pose = Thalmic.Myo.Pose;
 using UnlockType = Thalmic.Myo.UnlockType;
 using VibrationType = Thalmic.Myo.VibrationType;
+using Arm = Thalmic.Myo.Arm;
+
 
 public class MyoDataCreator : MonoBehaviour
 {
@@ -14,6 +17,8 @@ public class MyoDataCreator : MonoBehaviour
     public GameObject myo = null;
 
     public JointOrientation OrientationScript = null;
+
+    public ThalmicMyo MyoScript = null;
 
     public DmxController DmxControllerScript = null;
 
@@ -31,8 +36,6 @@ public class MyoDataCreator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(OrientationScript.ArmHorizontal);
-
         if (Knightrider)
         {
             StartKnightRider((OrientationScript.ArmHorizontal / 100f), Knightrider);
@@ -58,7 +61,7 @@ public class MyoDataCreator : MonoBehaviour
 
     void StartKnightRider(float percentage, bool status)
     {
-        DmxControllerScript.knightRiderActive = status;
+        DmxControllerScript.SetActiveEffect(DmxController.LedEffects.KNIGHT_RIDER);
         DmxControllerScript.knightRiderPercentage = percentage;
     }
 
