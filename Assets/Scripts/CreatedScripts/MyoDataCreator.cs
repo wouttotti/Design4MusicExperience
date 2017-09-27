@@ -50,7 +50,7 @@ public class MyoDataCreator : MonoBehaviour
 
             MasterFader = Mathf.Clamp((int)fadervalue, 0, 255);
             
-            StartIntensity((byte)(OrientationScript.ArmVertical), Intensity);
+            StartIntensity((byte)MasterFader);
         }
         else if (Stroboscope)
         {
@@ -81,8 +81,9 @@ public class MyoDataCreator : MonoBehaviour
     {
     }
 
-    private void StartIntensity(byte value, bool status)
+    private void StartIntensity(byte value)
     {
+        DmxControllerScript.masterFaderVal = value;
     }
 
     void StartKnightRider(float percentage)
@@ -96,6 +97,7 @@ public class MyoDataCreator : MonoBehaviour
 
     public void activateIntensity()
     {
+        DmxControllerScript.SetActiveEffect(DmxController.LedEffects.MASTER_CONTROL);
         Intensity = true;
 
     }
