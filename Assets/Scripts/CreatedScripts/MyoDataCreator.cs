@@ -51,9 +51,9 @@ public class MyoDataCreator : MonoBehaviour
         else if (Stroboscope)
         {
 			float anglepercentage = ((float)OrientationScript.ArmVertical / 180f);
-			float fadervalue = Mathf.Pow(255f, anglepercentage);
+            float fadervalue = 200 + (anglepercentage * 55);
 			MasterFader = Mathf.Clamp((int)fadervalue, 0, 255);
-			DmxControllerScript.masterFaderVal = ((byte)MasterFader);
+			DmxControllerScript.strobeVal = ((byte)MasterFader);
         }
         else if (ColorPalette)
         {
