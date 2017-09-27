@@ -53,24 +53,6 @@ public class JointOrientation : MonoBehaviour
         GetArmVertical();
         ArmHorizontal = GetArmHorizontal();
 
-        float anglepercentage = ((float)ArmVertical / 180f);
-
-        if (ChangeLightIntensity)
-        { 
-            float fadervalue = Mathf.Pow(255f, anglepercentage);
-
-            MasterFader = Mathf.Clamp((int)fadervalue, 0, 255);
-
-            if (DmxController)
-            {
-                //DmxController.masterFaderControlActive = true;
-                DmxController.masterFaderVal = MasterFader;
-            }
-        }
-        else
-        {
-            //DmxController.masterFaderControlActive = false;
-        }
         
 
         // Update references when the pose becomes fingers spread or the q key is pressed.

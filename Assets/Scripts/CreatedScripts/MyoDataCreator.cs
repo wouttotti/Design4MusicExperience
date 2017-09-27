@@ -4,12 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using LockingPolicy = Thalmic.Myo.LockingPolicy;
-using XDirection = Thalmic.Myo.XDirection;
 using Pose = Thalmic.Myo.Pose;
 using UnlockType = Thalmic.Myo.UnlockType;
 using VibrationType = Thalmic.Myo.VibrationType;
-using Arm = Thalmic.Myo.Arm;
-
 
 public class MyoDataCreator : MonoBehaviour
 {
@@ -28,6 +25,10 @@ public class MyoDataCreator : MonoBehaviour
     public bool ColorPalette = false;
     public bool Flash = false;
 
+    private bool punch;
+
+    private float MasterFader;
+
     // Use this for initialization
     void Start()
     {
@@ -38,52 +39,94 @@ public class MyoDataCreator : MonoBehaviour
     {
         if (Knightrider)
         {
-            StartKnightRider((OrientationScript.ArmHorizontal / 100f), Knightrider);
+            StartKnightRider(OrientationScript.ArmHorizontal / 100f);
         }
         else if (Intensity)
         {
+
+            float anglepercentage = ((float)OrientationScript.ArmVertical / 180f);
+            
+            float fadervalue = Mathf.Pow(255f, anglepercentage);
+
+            MasterFader = Mathf.Clamp((int)fadervalue, 0, 255);
+            
+            StartIntensity((byte)MasterFader);
         }
         else if (Stroboscope)
         {
+            StartStroboscope();
         }
         else if (ColorPalette)
         {
+            StartColorPalette();
         }
         else if (Flash)
         {
+            if (MyoScript.accelerometer.x > 1 && !punch)
+            {
+                StartCoroutine(PunchCooldown());
+                punch = true;
+                StartFlash();
+            }
         }
 
     }
 
-    private void StartIntensity()
+    private void StartColorPalette()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void StartStroboscope()
     {
     }
 
-    void StartKnightRider(float percentage, bool status)
+    private void StartIntensity(byte value)
     {
-        DmxControllerScript.SetActiveEffect(DmxController.LedEffects.KNIGHT_RIDER);
+        DmxControllerScript.masterFaderVal = value;
+    }
+
+    void StartKnightRider(float percentage)
+    {
         DmxControllerScript.knightRiderPercentage = percentage;
+    }
+    void StartFlash()
+    {
+        DmxControllerScript.Flash();
     }
 
     public void activateIntensity()
     {
+        DmxControllerScript.SetActiveEffect(DmxController.LedEffects.MASTER_CONTROL);
+        Intensity = true;
 
     }
     public void activateStroboscope()
     {
+        Stroboscope = true;
 
     }
     public void activateColorPalette()
     {
+        ColorPalette = true;
 
     }
     public void activateFlash()
     {
-
+        DmxControllerScript.SetActiveEffect(DmxController.LedEffects.FLASH);
+        Flash = true;
     }
     public void activateKnightrider()
     {
+        DmxControllerScript.SetActiveEffect(DmxController.LedEffects.KNIGHT_RIDER);
         Knightrider = true;
+    }
+
+    IEnumerator PunchCooldown()
+    {
+        yield return new WaitForSeconds(0.4f);
+        punch = false;
+        StopCoroutine(PunchCooldown());
     }
 
 }
