@@ -1,0 +1,14 @@
+﻿<Properties StartupConfiguration="{3D44417B-7B54-F92E-D79A-641F3586C31E}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/CreatedScripts/MyoDataCreator.cs">
+    <Files>
+      <File FileName="Assets/Scripts/CreatedScripts/MyoDataCreator.cs" Line="67" Column="10" />
+      <File FileName="Assets/Scripts/CreatedScripts/DmxController.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>

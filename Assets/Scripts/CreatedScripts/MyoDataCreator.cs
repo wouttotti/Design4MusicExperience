@@ -50,6 +50,10 @@ public class MyoDataCreator : MonoBehaviour
         }
         else if (Stroboscope)
         {
+			float anglepercentage = ((float)OrientationScript.ArmVertical / 180f);
+			float fadervalue = Mathf.Pow(255f, anglepercentage);
+			MasterFader = Mathf.Clamp((int)fadervalue, 0, 255);
+			DmxControllerScript.masterFaderVal = ((byte)MasterFader);
         }
         else if (ColorPalette)
         {
@@ -79,6 +83,7 @@ public class MyoDataCreator : MonoBehaviour
     }
     public void activateStroboscope()
     {
+        DmxControllerScript.SetActiveEffect(DmxController.LedEffects.STROBE_SPEED);
         Stroboscope = true;
 
     }
