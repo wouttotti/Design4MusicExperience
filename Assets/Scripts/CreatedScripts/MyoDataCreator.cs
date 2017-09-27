@@ -4,12 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using LockingPolicy = Thalmic.Myo.LockingPolicy;
-using XDirection = Thalmic.Myo.XDirection;
 using Pose = Thalmic.Myo.Pose;
 using UnlockType = Thalmic.Myo.UnlockType;
 using VibrationType = Thalmic.Myo.VibrationType;
-using Arm = Thalmic.Myo.Arm;
-
 
 public class MyoDataCreator : MonoBehaviour
 {
@@ -30,6 +27,8 @@ public class MyoDataCreator : MonoBehaviour
 
     private bool punch;
 
+    private float MasterFader;
+
     // Use this for initialization
     void Start()
     {
@@ -38,19 +37,28 @@ public class MyoDataCreator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         if (Knightrider)
         {
-            StartKnightRider((OrientationScript.ArmHorizontal / 100f), Knightrider);
+            StartKnightRider(OrientationScript.ArmHorizontal / 100f);
         }
         else if (Intensity)
         {
+
+            float anglepercentage = ((float)OrientationScript.ArmVertical / 180f);
+            
+            float fadervalue = Mathf.Pow(255f, anglepercentage);
+
+            MasterFader = Mathf.Clamp((int)fadervalue, 0, 255);
+            
+            StartIntensity((byte)(OrientationScript.ArmVertical), Intensity);
         }
         else if (Stroboscope)
         {
+            StartStroboscope();
         }
         else if (ColorPalette)
         {
+            StartColorPalette();
         }
         else if (Flash)
         {
@@ -64,11 +72,20 @@ public class MyoDataCreator : MonoBehaviour
 
     }
 
-    private void StartIntensity()
+    private void StartColorPalette()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void StartStroboscope()
     {
     }
 
-    void StartKnightRider(float percentage, bool status)
+    private void StartIntensity(byte value, bool status)
+    {
+    }
+
+    void StartKnightRider(float percentage)
     {
         DmxControllerScript.knightRiderPercentage = percentage;
     }
@@ -79,14 +96,17 @@ public class MyoDataCreator : MonoBehaviour
 
     public void activateIntensity()
     {
+        Intensity = true;
 
     }
     public void activateStroboscope()
     {
+        Stroboscope = true;
 
     }
     public void activateColorPalette()
     {
+        ColorPalette = true;
 
     }
     public void activateFlash()
