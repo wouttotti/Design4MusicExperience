@@ -40,6 +40,8 @@ public class DmxController : MonoBehaviour
 
     [Range(0, 255)]
     public byte strobeVal = 220;
+    public float strobeLerpMultiplier = 1f;
+    private byte lerpedStrobeVal = 200;
 
     [Range(0, 255)]
     public int masterFaderVal = 255;
@@ -72,6 +74,10 @@ public class DmxController : MonoBehaviour
     private void Update()
     {
         count += Time.deltaTime;
+
+        // Lerp strobe value
+        lerpedStrobeVal = (byte)Mathf.Lerp((float)lerpedStrobeVal, (float)strobeVal, strobeLerpMultiplier);
+
         if (count >= dmxSignalIntervalSeconds)
         {
             ResetCounter();
@@ -81,7 +87,7 @@ public class DmxController : MonoBehaviour
             else if (knightRiderActive)
                 SetKnightRider(knightRiderPercentage);
             else if (strobeActive)
-                SetStroboscopeAll(strobeVal);
+                SetStroboscopeAll(lerpedStrobeVal);
             else if (colorChangeActive)
                 SetColorChange(colorchangePercentage);
             else if (flashActive) { }
