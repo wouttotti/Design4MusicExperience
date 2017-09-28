@@ -77,29 +77,34 @@ public class MyoDataCreator : MonoBehaviour
 
     public void activateIntensity()
     {
+        ResetBools();
         DmxControllerScript.SetActiveEffect(DmxController.LedEffects.MASTER_CONTROL);
         Intensity = true;
 
     }
     public void activateStroboscope()
     {
+        ResetBools();
         DmxControllerScript.SetActiveEffect(DmxController.LedEffects.STROBE_SPEED);
         Stroboscope = true;
 
     }
     public void activateColorPalette()
     {
+        ResetBools();
         DmxControllerScript.SetActiveEffect(DmxController.LedEffects.COLOR_CHANGE);
         ColorPalette = true;
 
     }
     public void activateFlash()
     {
+        ResetBools();
         DmxControllerScript.SetActiveEffect(DmxController.LedEffects.FLASH);
         Flash = true;
     }
     public void activateKnightrider()
     {
+        ResetBools();
         DmxControllerScript.SetActiveEffect(DmxController.LedEffects.KNIGHT_RIDER);
         Knightrider = true;
     }
@@ -109,6 +114,15 @@ public class MyoDataCreator : MonoBehaviour
         yield return new WaitForSeconds(0.4f);
         punch = false;
         StopCoroutine(PunchCooldown());
+    }
+
+    public void ResetBools()
+    {
+        Knightrider = false;
+        Intensity = false;
+        Stroboscope = false;
+        ColorPalette = false;
+        Flash = false;
     }
 
 }

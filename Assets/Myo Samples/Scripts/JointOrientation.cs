@@ -216,7 +216,11 @@ public class JointOrientation : MonoBehaviour
 
         return ipercentage;
     }
- 
+
+    public void Recalibrate()
+    {
+        Calibrated = false;
+    }
 
 
 }
