@@ -187,6 +187,7 @@ public class DmxController : MonoBehaviour
                 break;
             case LedEffects.NONE:
                 DisableAllEffects();
+                SetMasterFaderAll(0);
                 break;
         }
     }
@@ -201,6 +202,7 @@ public class DmxController : MonoBehaviour
         strobeActive = false;
         knightRiderActive = false;
         masterFaderControlActive = false;
+
     }
 
     /// <summary>
@@ -294,6 +296,7 @@ public class DmxController : MonoBehaviour
     public void SetStroboscope(byte value, int ledbarIndex = 0)
     {
         ShowtecLLB8.SetStroboscope(value, false, ledbarIndex);
+        SetMasterFader(255, ledbarIndex);
     }
 
     /// <summary>
